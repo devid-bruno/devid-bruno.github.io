@@ -1,13 +1,13 @@
 const sequelize = require('sequelize');
 
-var db = 'heroku_65b1964ba89f8c7'
+var db = 'heroku_962b58c4e120317'
 
-const connect = new sequelize(`${db}`, 'b22f2d4798a54a', '70058b3f24e3e9c', {
+const connect = new sequelize(`${db}`, 'b5c013690079a7', '79ca1623', {
     host: 'us-cdbr-east-06.cleardb.net',
-    dialect: 'mysql',
+    dialect: 'mysql2',
     timezone: '-03:00'
 })
 
-//mysql://b22f2d4798a54a:d0d3a947@us-cdbr-east-06.cleardb.net/?reconnect=true
+//mysql://:@/?reconnect=true
 
 module.exports = connect;
