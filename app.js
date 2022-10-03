@@ -29,7 +29,7 @@ app.get("/perguntar", (req, res) => {
 });
 
 app.get("/about", (req, res) => {
-    res.render('about');
+    res.render('sobre');
 })
 
 app.post("/salvarpergunta", (req, res) => {
