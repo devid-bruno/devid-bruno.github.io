@@ -8,7 +8,7 @@ const Resposta = require('./database/Resposta');
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
-
+    
 app.get("/", (req, res) => {
     question.findAll({ raw: true, order: [
         ['id', 'desc']
@@ -22,8 +22,7 @@ app.get("/", (req, res) => {
 
 app.use(express.urlencoded({
     extended: true
-}))
-
+}));
 
 app.get("/perguntar", (req, res) => {
     res.render('perguntar');
