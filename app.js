@@ -30,7 +30,11 @@ app.get("/perguntar", (req, res) => {
 
 app.get("/about", (req, res) => {
     res.render('sobre');
-})
+});
+
+app.get('/gato', (req, res) => {
+    res.render('gato');
+});
 
 app.post("/salvarpergunta", (req, res) => {
     var titulo = req.body.titulo;
@@ -77,6 +81,6 @@ app.post("/responder", (req, res) => {
 });
 
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 
 app.listen(port, () => { console.log(`App rodando! na porta ${port}`); });
