@@ -8,7 +8,7 @@ const Resposta = require('./database/Resposta');
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
-    
+
 app.get("/", (req, res) => {
     question.findAll({ raw: true, order: [
         ['id', 'desc']
@@ -27,6 +27,10 @@ app.use(express.urlencoded({
 app.get("/perguntar", (req, res) => {
     res.render('perguntar');
 });
+
+app.get("/about", (req, res) => {
+    res.render('about');
+})
 
 app.post("/salvarpergunta", (req, res) => {
     var titulo = req.body.titulo;
