@@ -1,8 +1,8 @@
 const sequelize = require('sequelize');
 
-var db = 'heroku_962b58c4e120317'
+var db = 'heroku_466a2a69a79072f'
 
-const connect = new sequelize(`${db}`, 'b5c013690079a7', '79ca1623', {
+const connect = new sequelize(`${db}`, 'b4cc72465aee31', 'f06cfbbe', {
     host: 'us-cdbr-east-06.cleardb.net',
     dialect: 'mysql',
     timezone: '-03:00'
