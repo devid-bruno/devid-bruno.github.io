@@ -1,0 +1,19 @@
+{
+    "name": "ask",
+    "version": "0.0.1",
+    "description": "uma plataforma de perguntas e respostas semelhante ao ask.fm e ao yahoou respostas.",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app"
+    },
+    "author": "devid bruno",
+    "license": "ISC",
+    "dependencies": {
+        "body-parser": "^1.20.0",
+        "ejs": "^3.1.8",
+        "express": "^4.18.1",
+        "mysql2": "^2.3.3",
+        "nodemon": "^2.0.16",
+        "sequelize": "^6.20.0"
+    }
+}
