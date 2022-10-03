@@ -12,11 +12,11 @@ const question = connect.define('pergunta',{
     }
 });
 
-question.sync({force: false}).then(() => {
-    console.log("Tabela criada com sucesso!");
-}).catch((erro) => {
-    console.log("Erro ao criar a tabela: " + erro);
-});
+//question.sync({force: false}).then(() => {
+//    console.log("Tabela criada com sucesso!");
+//}).catch((erro) => {
+//    console.log("Erro ao criar a tabela: " + erro);
+//});
 
 
 module.exports = question;

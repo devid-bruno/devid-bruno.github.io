@@ -8,4 +8,6 @@ const connect = new sequelize(`${db}`, 'b22f2d4798a54a', 'd0d3a947', {
     timezone: '-03:00'
 })
 
+//mysql://b22f2d4798a54a:d0d3a947@us-cdbr-east-06.cleardb.net/?reconnect=true
+
 module.exports = connect;
