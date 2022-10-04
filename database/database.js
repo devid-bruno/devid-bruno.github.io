@@ -6,10 +6,12 @@ const connect = new sequelize(`${db}`, 'b4cc72465aee31', 'f06cfbbe', {
     host: 'us-cdbr-east-06.cleardb.net',
     dialect: 'mysql',
     timezone: '-03:00'
-}).then(() => {
-    console.log("Conectado com sucesso!");
-}).catch((erro) => {
-    console.log("Erro ao conectar: " + erro);
-});
+})
+
+if(connect){
+    console.log("Conectado com sucesso");
+}else(error) => {
+    console.log("Erro ao conectar" + error);
+}
 
 module.exports = connect;
