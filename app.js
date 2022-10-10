@@ -3,6 +3,22 @@ const app = express();
 const connect = require('./database/database');
 const question = require('./database/Question');
 const Resposta = require('./database/Resposta');
+const axios = require('axios');
+
+
+var config = {
+    method: 'get',
+    url: 'https://api.thecatapi.com/v1/images/search?format=src&limit=10',
+    params:{
+        format: 'src',
+        limit: '10'
+    },
+    headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': 'live_8fOqGsWFIsNjoIWupcvrrG9Tnun6PEMR8jMXaeS1g4SWr61DY8ZA76M4RsT6pqob'
+    }
+};
+
 
 
 app.set('view engine', 'ejs');
@@ -10,13 +26,15 @@ app.use(express.static('public'));
 
 
 app.get("/", (req, res) => {
-    question.findAll({ raw: true, order: [
-        ['id', 'desc']
-    ]}).then((questions) => {
-       console.log(questions);
-       res.render('index', {
-           questions: questions
-       });
+    question.findAll({
+        raw: true, order: [
+            ['id', 'desc']
+        ]
+    }).then((questions) => {
+        console.log(questions);
+        res.render('index', {
+            questions: questions
+        });
     });
 });
 
@@ -29,11 +47,18 @@ app.get("/perguntar", (req, res) => {
 });
 
 app.get("/about", (req, res) => {
-   res.render('sobre');
+    res.render('sobre');
 });
 
 app.get('/gato', (req, res) => {
-    res.render('gato');
+    axios(config).then((response) => {
+        res.render('gato', {
+            response: response.data
+        });
+    }).catch(function (error) {
+        console.log(error);
+    });
+
 });
 
 app.post("/salvarpergunta", (req, res) => {
@@ -42,7 +67,7 @@ app.post("/salvarpergunta", (req, res) => {
     question.create({
         titulo: titulo,
         descricao: descricao
-    }).then(()=>{
+    }).then(() => {
         res.redirect('/');
     });
 });
@@ -50,11 +75,11 @@ app.post("/salvarpergunta", (req, res) => {
 app.get("/pergunta/:id", (req, res) => {
     var id = req.params.id;
     question.findOne({
-        where: {id: id}
+        where: { id: id }
     }).then(pergunta => {
-        if(pergunta != undefined){
+        if (pergunta != undefined) {
             Resposta.findAll({
-                where: {perguntaId: pergunta.id},
+                where: { perguntaId: pergunta.id },
                 order: [['id', 'desc']]
             }).then(respostas => {
                 res.render('pergunta', {
@@ -62,7 +87,7 @@ app.get("/pergunta/:id", (req, res) => {
                     respostas: respostas
                 });
             })
-        }else{
+        } else {
             res.redirect('/');
         }
     });
