@@ -4,6 +4,8 @@ const connect = require('./database/database');
 const question = require('./database/Question');
 const Resposta = require('./database/Resposta');
 const axios = require('axios');
+const User = require('./database/User')
+
 
 
 var config = {
@@ -25,12 +27,8 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
 
-app.get('/', (req, res) => {
-    res.render('login');
-})
 
-/*
-app.get("/", (req, res) => {
+app.get("/first", (req, res) => {
     question.findAll({
         raw: true, order: [
             ['id', 'desc']
@@ -42,7 +40,6 @@ app.get("/", (req, res) => {
         });
     });
 });
-*/
 
 
 app.use(express.urlencoded({
@@ -79,6 +76,7 @@ app.post("/salvarpergunta", (req, res) => {
     });
 });
 
+
 app.get("/pergunta/:id", (req, res) => {
     var id = req.params.id;
     question.findOne({
@@ -111,6 +109,60 @@ app.post("/responder", (req, res) => {
         res.redirect('/pergunta/' + perguntaId);
     });
 });
+
+app.get('/', (req, res) => {
+    res.render('login');
+});
+
+app.post("/login", (req, res) => {
+    var { email, password } = req.body;
+    User.findOne({
+        where: {
+            email: email,
+            password: password
+        }
+    }).then((user) => {
+        if (user != undefined) {
+            res.redirect('/first');
+        } else {
+            res.json({err: "Invalid email or password"});
+        }
+    }).catch(() => {
+        res.redirect('/');
+    })
+});
+
+
+app.get('/usercreate', (req, res) => {
+    res.render('user');
+})
+
+app.post('/createuser', (req, res) => {
+    var {email, password, name} = req.body;
+
+    User.create({
+        email: email,
+        password: password,
+        name: name
+    }).then(() => {
+        res.redirect('/');
+    }).then(() => {
+        res.json('User created');
+    })
+})
+
+
+
+
+
+app.post('/auth', (req, res) => {
+    const { email, password } = req.body;
+
+    if (email === ' ' && password === ' ') {
+        const token = jwt.sign({ email }, 'secret', { expiresIn: '10h' });
+        res.json({ token });
+    }
+})
 
 
 const port = process.env.PORT || 3000;
