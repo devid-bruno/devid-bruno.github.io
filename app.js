@@ -152,9 +152,6 @@ app.post('/createuser', (req, res) => {
 })
 
 
-
-
-
 app.post('/auth', (req, res) => {
     const { email, password } = req.body;
 
