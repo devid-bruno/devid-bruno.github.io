@@ -65,6 +65,10 @@ app.get('/gato', (req, res) => {
 
 });
 
+app.get('/teste', (req, res) => {
+    res.render('teste')
+})
+
 app.post("/salvarpergunta", (req, res) => {
     var titulo = req.body.titulo;
     var descricao = req.body.descricao;
