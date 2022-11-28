@@ -59,7 +59,7 @@ app.post("/salvarpergunta", (req, res) => {
         titulo: titulo,
         descricao: descricao
     }).then(() => {
-        res.redirect('/pergunta');
+        res.redirect('/first');
     });
 });
 
