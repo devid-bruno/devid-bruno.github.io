@@ -1,14 +1,11 @@
-function verifyJWT(req, res, next){
-    const token = req.headers['x-access-token'];
-    if (!token) return res.status(401).json({ auth: false, message: 'No token provided.' });
-    
-    jwt.verify(token, process.env.SECRET, function(err, decoded) {
-      if (err) return res.status(500).json({ auth: false, message: 'Failed to authenticate token.' });
-      
-      // se tudo estiver ok, salva no request para uso posterior
-      req.userId = decoded.id;
+
+function auth(req, res, next){
+  if(req.session.user != undefined){
       next();
-    });
+  }else{
+      res.redirect("/");
+  }
 }
 
-module.exports = verifyJWT;
+
+module.exports = auth;

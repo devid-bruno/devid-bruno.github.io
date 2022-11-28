@@ -5,8 +5,8 @@ const question = require('./database/Question');
 const Resposta = require('./database/Resposta');
 const axios = require('axios');
 const User = require('./database/User')
-
-
+const session = require('express-session');
+const auth = require('./middleware/auth');
 
 var config = {
     method: 'get',
@@ -26,20 +26,6 @@ var config = {
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
-
-
-app.get("/first", (req, res) => {
-    question.findAll({
-        raw: true, order: [
-            ['id', 'desc']
-        ]
-    }).then((questions) => {
-        console.log(questions);
-        res.render('index', {
-            questions: questions
-        });
-    });
-});
 
 
 app.use(express.urlencoded({
@@ -134,6 +120,26 @@ app.post("/login", (req, res) => {
 });
 
 
+const oneDay = 1000 * 60 * 60 * 24;
+
+app.use(session({
+    secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
+    saveUninitialized:true,
+    cookie: { maxAge: oneDay },
+    resave: false 
+}));
+
+app.get("/first", (req, res) => {
+    question.findAll().then(questions => {
+        res.render("index", {questions: questions});
+     })
+});
+
+app.get('/logout',(req,res) => {
+    req.session.destroy();
+    res.redirect('/');
+});
+
 app.get('/usercreate', (req, res) => {
     res.render('user');
 })
@@ -152,16 +158,36 @@ app.post('/createuser', (req, res) => {
     })
 })
 
+app.post("/authenticate", (req, res) => {
+    const {email, password} = req.body;
 
-app.post('/auth', (req, res) => {
-    const { email, password } = req.body;
+    User.findOne({
+        where:{
+            email: email
+        }
+    }).then((user) => {
+        if(user != undefined){
+            if(user.password == password){
+                req.session.user = user
+                res.redirect("/first");
+            }else{
+                res.redirect("/");
+            }
+        }
+    })
+});
 
-    if (email === ' ' && password === ' ') {
-        const token = jwt.sign({ email }, 'secret', { expiresIn: '10h' });
-        res.json({ token });
-    }
+app.post('/cadastro', (req, res) => {
+    const {name, email, password} = req.body;
+
+    User.create({
+        name: name,
+        email: email,
+        password: password
+    }).then(() => {
+        res.redirect("/first");
+    })
 })
-
 
 const port = process.env.PORT || 3000;
 
